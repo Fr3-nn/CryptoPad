@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CryptoPad</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body class="dark-mode">
+  <div class="app-container">
+    <header class="app-header">
+      <div class="window-controls">
+        <div class="control-button close" id="window-close" title="Close">
+          <i class="fas fa-times"></i>
+        </div>
+        <div class="control-button minimize" id="window-minimize" title="Minimize">
+          <i class="fas fa-minus"></i>
+        </div>
+        <div class="control-button maximize" id="window-maximize" title="Maximize">
+          <i class="fas fa-square"></i>
+        </div>
+      </div>
+      <div class="app-title">
+        <h1><i class="fas fa-lock"></i> CryptoPad</h1>
+      </div>
+      <div class="app-controls">
+        <button id="settings-btn" class="control-btn" title="Settings">
+          <i class="fas fa-cog"></i>
+        </button>
+        <button id="theme-toggle" class="control-btn" title="Toggle Theme">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="mode-selector">
+      <div class="selector-container">
+        <div class="mode-tab active" data-mode="base64-encode">
+          <i class="fas fa-code"></i> Base64 Encode
+        </div>
+        <div class="mode-tab" data-mode="base64-decode">
+          <i class="fas fa-decode"></i> Base64 Decode
+        </div>
+        <div class="mode-tab" data-mode="encrypt">
+          <i class="fas fa-lock"></i> Encrypt
+        </div>
+        <div class="mode-tab" data-mode="decrypt">
+          <i class="fas fa-unlock"></i> Decrypt
+        </div>
+      </div>
+    </div>
+
+    <main class="app-content">
+      <div class="panel input-panel">
+        <div class="panel-header">
+          <h2>Input</h2>
+          <div class="panel-controls">
+            <button id="clear-input" class="panel-btn" title="Clear Input">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+            <button id="paste-input" class="panel-btn" title="Paste">
+              <i class="fas fa-paste"></i>
+            </button>
+            <button id="open-file" class="panel-btn" title="Open File">
+              <i class="fas fa-folder-open"></i>
+            </button>
+          </div>
+        </div>
+        <div class="panel-content">
+          <textarea id="input-text" placeholder="Enter text to process..."></textarea>
+        </div>
+      </div>
+
+      <div id="key-panel" class="panel key-panel hidden">
+        <div class="panel-header">
+          <h2>Encryption Key</h2>
+        </div>
+        <div class="panel-content">
+          <input type="password" id="encryption-key" placeholder="Enter encryption key...">
+          <div class="show-password">
+            <input type="checkbox" id="show-key">
+            <label for="show-key">Show key</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel output-panel">
+        <div class="panel-header">
+          <h2>Result</h2>
+          <div class="panel-controls">
+            <button id="copy-output" class="panel-btn" title="Copy to Clipboard">
+              <i class="fas fa-copy"></i>
+            </button>
+            <button id="save-output" class="panel-btn" title="Save to File">
+              <i class="fas fa-save"></i>
+            </button>
+          </div>
+        </div>
+        <div class="panel-content">
+          <textarea id="output-text" placeholder="Result will appear here..." readonly></textarea>
+        </div>
+      </div>
+    </main>
+
+    <div class="status-bar">
+      <div id="status-message">Ready</div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-cog"></i> Settings</h2>
+        <button id="close-settings" class="close-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Appearance Section -->
+        <div class="settings-section">
+          <h3>Appearance</h3>
+          <div class="setting-item">
+            <label for="theme-setting">Theme</label>
+            <select id="theme-setting" class="setting-control">
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+              <option value="system">Use System Setting</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label for="font-size-setting">Font Size</label>
+            <select id="font-size-setting" class="setting-control">
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Behavior Section -->
+        <div class="settings-section">
+          <h3>Behavior</h3>
+          <div class="setting-item">
+            <label for="default-mode-setting">Default Mode</label>
+            <select id="default-mode-setting" class="setting-control">
+              <option value="base64-encode">Base64 Encode</option>
+              <option value="base64-decode">Base64 Decode</option>
+              <option value="encrypt">Encrypt</option>
+              <option value="decrypt">Decrypt</option>
+            </select>
+          </div>
+          <div class="setting-item checkbox">
+            <input type="checkbox" id="confirm-close-setting">
+            <label for="confirm-close-setting">Confirm before closing</label>
+          </div>
+          <div class="setting-item checkbox">
+            <input type="checkbox" id="auto-save-setting">
+            <label for="auto-save-setting">Auto-save output</label>
+          </div>
+        </div>
+
+        <!-- Advanced Section -->
+        <div class="settings-section">
+          <h3>Advanced</h3>
+          <div class="setting-item">
+            <button id="reset-settings" class="danger-btn">Reset All Settings</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="save-settings" class="primary-btn">Save Changes</button>
+        <button id="cancel-settings" class="secondary-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="notification" class="notification">
+    <div class="notification-content">
+      <i class="fas fa-check-circle"></i>
+      <span id="notification-message">Operation successful</span>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html> 
